@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion 28
+//    buildToolsVersion '27.0.3'
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 28
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            //this can remove no-used images in generated-apk, and it is depends on "minifyEnabled true"
+            zipAlignEnabled true
+        }
+        debug {
+            minifyEnabled false
+        }
+
+    }
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
+}
+
+
+
+dependencies {
+
+//    compileOnly  project(':utils-box')
+    compileOnly 'gb.tp.utils:TPUtils:1.0.2'
+
+    compileOnly  'com.squareup.retrofit2:retrofit:2.4.0'
+    compileOnly  'com.google.code.gson:gson:2.8.5'
+    compileOnly  'io.reactivex.rxjava2:rxandroid:2.0.2'
+    compileOnly  'io.reactivex.rxjava2:rxjava:2.1.15'
+    compileOnly  'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+
+    compileOnly  'com.github.simonpercic:oklog3:2.1.0'
+
+    compileOnly "com.android.support:support-v4:28.0.0"
+
+
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+//gradlew clean build bintrayUpload -PbintrayUser=httpping -PbintrayKey=363bcd47dd3557230d01c1fb525c0a02e3ae8b92 -PdryRun=false
+
+publish {
+    repoName = 'TPNet'
+    userOrg = 'gbtp'//bintray.com用户名
+    groupId = "gb.tp.tpnet"//jcenter上的路径
+    artifactId = 'TPNet'//项目名称
+    publishVersion = '1.0.1'//版本号
+    desc = 'TPNet'
+    website = 'https://github.com/httpping/tp_bindview'
+}
+
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
+tasks.withType(Javadoc) {
+    options.encoding = "UTF-8"
+}
